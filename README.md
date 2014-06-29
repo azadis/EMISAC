@@ -13,7 +13,7 @@ and variations in imaging conditions.
 Another application of this code is in time-lapse photography where the light correction 
 is needed.
 
-The first version 1.0 (July 2014) is developed by Samaneh Azadi in a colaboration with 
+The first version 1.0 (June 2014) is developed by Samaneh Azadi in a colaboration with 
 Jeremy Maitin-Shepard in the Robotic Learning Lab, EECS department, UC Berkeley under the 
 supervision of Prof. Pieter Abbeel.
 
@@ -55,24 +55,24 @@ step are the outputs of step 5.
 7. The optimized parameters generated in step 6 are smoothed with an averaging filter 
 to remove the blocking effect produced in the first and second steps.
 
-Required python modules:
+#Required python modules:
 	numpy
 	scipy
 	h5py
 	skimage
 	joblib
 	
-Usage:
+#Usage:
 	./normalization_command.py [options] <I> <stp_x> <stp_y> <w_x> <w_y> <par_x> <par_y> <n_cpu> <output-path>
 	
-Example:
+#Example:
 	As an example, the input image is the snemi3d image available in http://brainiac2.mit.edu/SNEMI3D/.
 	The size of the image is (1024,1024,100).
 	./normalization-commad.py --up_fg 0 ./train-input.h5 4 4 32 32 4 4 8 /home/normalized_files
 	or
 	./normalization-commad.py ./train-input.h5 4 4 32 32 4 4 8 /home/normalized_files
 	
-Description:
+#Description:
 	<I>			STRING		The path to 3D input image on which you want to do normalization.
 							(it should be an image file of .h5 or .tif formats)
 	<stp_x>		INT 		The sampling rate of the input image in the x coordinate.
@@ -138,7 +138,7 @@ Description:
 -------------------------------------------------------------------------------------------------
 Version History
 
-1.0 07/06/2014
+1.0 06/28/2014
 	-- source code released
 	
 	
