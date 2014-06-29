@@ -19,6 +19,7 @@ supervision of Prof. Pieter Abbeel.
 
 For any question about the algorithm or the code, feel free to email sazadi156@gmail.com .
 
+
 ------------------------------------------------------------------------------------------
 This code gets the original 3D image stack and several parameters as the input and produces 
 the normalized image as an output which will be saved in the path specified by the user.
