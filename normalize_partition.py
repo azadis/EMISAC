@@ -80,6 +80,7 @@ def usage():
 	print "							accuracy; 10.0 for extremely high accuracy. The lower the 'fact' value,"
 	print "							the higher the running time. The values in [1e8,1e10] produce good results."			
 	print "		-h					Help. Print Usage."
+
 opts, args = getopt.getopt(sys.argv[1:], "h",["grp=","lm=","beta_bnd_l=","beta_bnd_u=","alpha_bnd_l=","alpha_bnd_u=","cnst=","fact=","beta_val_l=","beta_val_u=","alpha_val_l=","alpha_val_u="])
 
 #---------------------------------------------------------------
