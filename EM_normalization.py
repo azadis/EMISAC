@@ -289,7 +289,7 @@ def minimizer_downsampled(partnum,step):
 	da.close()
 	img_path='%s/img_partition%s.h5'%(output_path,partnum)
 	"""call for the main normalization function--------------"""
-	os.system("./normalize_partition.py --grp %s --lm %f --beta_bnd_l %f --beta_bnd_u %f --alpha_bnd_l %f --alpha_bnd_u %f --cnst %f --fact %f --beta_val_l %f --beta_val_u %f --alpha_val_l %f --alpha_val_u %f %s %d %d %d %d %d %d %d %s"%(group_name,lmbda,lower_bnd_beta,upper_bnd_beta,lower_bnd_alpha,upper_bnd_alpha,cnst,fact,lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha,img_path,partnum,window_size_x/step_x,window_size_y/step_y,num_partitions_x,num_partitions_y,num_parallel,step,output_path))
+	os.system("./normalize_partition_fastDwnSample_final_ver.py --grp %s --lm %f --beta_bnd_l %f --beta_bnd_u %f --alpha_bnd_l %f --alpha_bnd_u %f --cnst %f --fact %f --beta_val_l %f --beta_val_u %f --alpha_val_l %f --alpha_val_u %f %s %d %d %d %d %d %d %d %s"%(group_name,lmbda,lower_bnd_beta,upper_bnd_beta,lower_bnd_alpha,upper_bnd_alpha,cnst,fact,lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha,img_path,partnum,window_size_x/step_x,window_size_y/step_y,num_partitions_x,num_partitions_y,num_parallel,step,output_path))
 	
 #----------------------------------------------------------	
 def minimizer(partnum,step):
@@ -300,7 +300,7 @@ def minimizer(partnum,step):
 	da.close()
 	img_path='%s/img_partition%s.h5'%(output_path,partnum)
 	"""call for the main normalization function--------------"""
-	os.system("./normalize_partition.py --grp %s --lm %f --beta_bnd_l %f --beta_bnd_u %f --alpha_bnd_l %f --alpha_bnd_u %f --cnst %f --fact %f --beta_val_l %f --beta_val_u %f --alpha_val_l %f --alpha_val_u %f %s %d %d %d %d %d %d %d %s"%(group_name,lmbda,lower_bnd_beta,upper_bnd_beta,lower_bnd_alpha,upper_bnd_alpha,cnst,fact,lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha,img_path,partnum,window_size_x,window_size_y,num_partitions_x,num_partitions_y,num_parallel,step,output_path))
+	os.system("./normalize_partition_fastDwnSample_final_ver.py --grp %s --lm %f --beta_bnd_l %f --beta_bnd_u %f --alpha_bnd_l %f --alpha_bnd_u %f --cnst %f --fact %f --beta_val_l %f --beta_val_u %f --alpha_val_l %f --alpha_val_u %f %s %d %d %d %d %d %d %d %s"%(group_name,lmbda,lower_bnd_beta,upper_bnd_beta,lower_bnd_alpha,upper_bnd_alpha,cnst,fact,lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha,img_path,partnum,window_size_x,window_size_y,num_partitions_x,num_partitions_y,num_parallel,step,output_path))
 #----------------------------------------------------------			
 		
 	

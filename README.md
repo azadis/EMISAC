@@ -63,14 +63,14 @@ to remove the blocking effect produced in the first and second steps.
 	joblib
 	
 #Usage:
-	./normalization_command.py [options] <I> <stp_x> <stp_y> <w_x> <w_y> <par_x> <par_y> <n_cpu> <output-path>
+	./EM_normalization.py [options] <I> <stp_x> <stp_y> <w_x> <w_y> <par_x> <par_y> <n_cpu> <output-path>
 	
 #Example:
 	As an example, the input image is the snemi3d image available in http://brainiac2.mit.edu/SNEMI3D/.
 	The size of the image is (1024,1024,100).
-	./normalization-commad.py --up_fg 0 ./train-input.h5 4 4 32 32 4 4 8 /home/normalized_files
+	./EM_normalization.py --up_fg 0 ./train-input.h5 4 4 32 32 4 4 8 /home/normalized_files
 	or
-	./normalization-commad.py ./train-input.h5 4 4 32 32 4 4 8 /home/normalized_files
+	./EM_normalization.py ./train-input.h5 4 4 32 32 4 4 8 /home/normalized_files
 	
 #Description:
 	<I>			STRING		The path to 3D input image on which you want to do normalization.
