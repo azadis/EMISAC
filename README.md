@@ -17,7 +17,7 @@ The first version 1.0 (June 2014) is developed by Samaneh Azadi in a colaboratio
 Jeremy Maitin-Shepard in the Robotic Learning Lab, EECS department, UC Berkeley under the 
 supervision of Prof. Pieter Abbeel.
 
-For any questions about the algorithm or the code, feel free to email sazadi156@gmail.com .
+For any question about the algorithm or the code, feel free to email sazadi156@gmail.com .
 
 ------------------------------------------------------------------------------------------
 This code gets the original 3D image stack and several parameters as the input and produces 
