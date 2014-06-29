@@ -76,8 +76,6 @@ def usage():
 	print " --lm    	FLOAT	Determines the ratio of the regularization term to the loss function."
 	print "-h			Help. Print Usage."
 
-
-	
 #-----------------------------------------------------------
 # Auto-detect file format----------------------------------
 def read_image_stack(fn):
