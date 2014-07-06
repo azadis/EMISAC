@@ -25,6 +25,7 @@ URL: http://rll.berkeley.edu/2014_ECCV_EMISAC/
 
 2)S. Azadi, J. Maitin-Shepard, P. Abbeel, "Optimization-Based Artifact
 Correction for Electron Microscopy Image Stacks", Proceedings of the European Conference on Computer Vision, 2014.
+
 ---------------------------------------------------------------------------------------------	
 
 This code is developed in python to eliminate the artifacts in the electron microscopy image
