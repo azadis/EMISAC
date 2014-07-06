@@ -4,6 +4,29 @@ EMISAC
 Optimization-Based Artifact Correction for Electron Microscopy Image Stacks
 
 ---------------------------------------------------------------------------------------------
+Copyright (C) {2014}  {Samaneh Azadi, Jeremy Maitin-Shepard, Pieter Abbeel}
+
+This program is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The research is to be cited in the bibliography as:
+
+1)S. Azadi, J. Maitin-Shepard, P. Abbeel, "EMISAC software release",
+URL: http://rll.berkeley.edu/2014_ECCV_EMISAC/
+
+2)S. Azadi, J. Maitin-Shepard, P. Abbeel, "Optimization-Based Artifact
+Correction for Electron Microscopy Image Stacks", Proceedings of the
+European Conference on Computer Vision, 2014.
+---------------------------------------------------------------------------------------------	
 
 This code is developed in python to eliminate the artifacts in the electron microscopy image
 stacks most notably along the section axes,and produce an image with a higher quality. 
