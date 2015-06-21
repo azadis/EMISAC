@@ -215,7 +215,7 @@ def smoothing_func(lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha
 					beta_mat=np.repeat(beta_mat_block,window_size_y,axis=1)	
 					del beta_mat_block
 					beta_mat=np.uint16((float(1)/float(accuracy1))*beta_mat)
-					beta_changed=rank.mean_bilateral(beta_mat,selem=selem,s0=lower_val_beta,s1=upper_val_beta)
+					beta_changed=rank.bilateral_mean(beta_mat,selem=selem,s0=lower_val_beta,s1=upper_val_beta)
 					beta_changed=(np.float32(beta_changed))*float(accuracy1)
 					del beta_mat
 					beta_vec=np.reshape(beta_changed,(r_org*c_org,1),order='F')
@@ -224,7 +224,7 @@ def smoothing_func(lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha
 					del alpha_mat_block
 					alpha_mat=alpha_mat+cnst
 					alpha_mat=np.uint16((float(1)/float(accuracy2))*alpha_mat)
-					alpha_changed=rank.mean_bilateral(alpha_mat,selem=selem,s0=lower_val_alpha,s1=upper_val_alpha)
+					alpha_changed=rank.bilateral_mean(alpha_mat,selem=selem,s0=lower_val_alpha,s1=upper_val_alpha)
 					alpha_changed=((np.float32(alpha_changed))*float(accuracy2))-cnst
 					del alpha_mat
 					alpha_vec=np.reshape(alpha_changed,(r_org*c_org,1),order='F')
