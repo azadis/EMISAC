@@ -176,70 +176,79 @@ def smoothing_func(lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha
 	accuracy2=.05
 	r=r_org/num_partitions_x
 	c=c_org/num_partitions_y
-	
+	max_shared_array_size = 33000000
+
 	def do_bilateral():
 		
 		num_threads = num_parallel
-		value_total, value_total_arr = make_shared_farray([r_org,c_org,s])
-		v_queue = multiprocessing.Queue()
-		finished_count = multiprocessing.Value(ctypes.c_long, 0)
-		buckets=s
-		for bucket in range(buckets):
-			v_queue.put(bucket)
+		volume_size = np.prod([r_org,c_org,s])
+		volume_parts = np.ceil(np.float(volume_size)/ (100*max_shared_array_size))
+		value_total = np.zeros((r_org,c_org,s))
+		for z_division in np.arange(volume_parts):
+			s_portion = int(s/volume_parts)
+			s_portion_prev = s_portion
+			if z_division==volume_parts:
+				s_portion = s - volume_parts*s_portion_prev
+			value_portion, value_portion_arr = make_shared_farray([r_org,c_org,s_portion])
+			v_queue = multiprocessing.Queue()
+			finished_count = multiprocessing.Value(ctypes.c_long, 0)
+			buckets=s_portion
+			for bucket in range(buckets):
+				v_queue.put(bucket)
 
-		def thread_proc():
-			while True:
-				try:
-					bucket = v_queue.get_nowait()
-				except:
-					break
-	
-				beta_mat_block=beta[:,:,bucket]
-				alpha_mat_block=alpha[:,:,bucket]
-			
-				correction_mat_pixel=scsp.diags(Dimg_org[bucket*r_org*c_org:(bucket+1)*r_org*c_org],0)
-				correction_mat2_pixel=scsp.eye(r_org*c_org,r_org*c_org)
-				correction_mat_pixel=scsp.hstack([correction_mat_pixel,correction_mat2_pixel])
-				del correction_mat2_pixel
-			
-				beta_mat_block=np.repeat(beta_mat_block,window_size_x,axis=0)	
-				beta_mat=np.repeat(beta_mat_block,window_size_y,axis=1)	
-				del beta_mat_block
-				beta_mat=np.uint16((float(1)/float(accuracy1))*beta_mat)
-				beta_changed=rank.bilateral_mean(beta_mat,selem=selem,s0=lower_val_beta,s1=upper_val_beta)
-				beta_changed=(np.float32(beta_changed))*float(accuracy1)
-				del beta_mat
-				beta_vec=np.reshape(beta_changed,(r_org*c_org,1),order='F')
-				alpha_mat_block=np.repeat(alpha_mat_block,window_size_x,axis=0)	
-				alpha_mat=np.repeat(alpha_mat_block,window_size_y,axis=1)	
-				del alpha_mat_block
-				alpha_mat=alpha_mat+cnst
-				alpha_mat=np.uint16((float(1)/float(accuracy2))*alpha_mat)
-				alpha_changed=rank.bilateral_mean(alpha_mat,selem=selem,s0=lower_val_alpha,s1=upper_val_alpha)
-				alpha_changed=((np.float32(alpha_changed))*float(accuracy2))-cnst
-				del alpha_mat
-				alpha_vec=np.reshape(alpha_changed,(r_org*c_org,1),order='F')
-				param_vec=np.vstack([beta_vec,alpha_vec])
-				corrected_data_smoothed=correction_mat_pixel*param_vec
-				corrected_data_smoothed=np.reshape(corrected_data_smoothed,(r_org,c_org),order='F')
-				
-				num_finished = 0
-				with finished_count.get_lock():
-					finished_count.value += 1
-					num_finished = finished_count.value
-				#print '  Finished %d/%d' % (num_finished, buckets)
-				with value_total_arr.get_lock():
-					value_total[...][:,:,bucket]=corrected_data_smoothed
+			def thread_proc():
+				while True:
+					try:
+						bucket = v_queue.get_nowait()
+					except:
+						break
 					
+					beta_mat_block=beta[:,:,(z_division*s_portion)+bucket]
+					alpha_mat_block=alpha[:,:,(z_division*s_portion)+bucket]
 		
-		procs = []
-		for i in range(num_threads):
-			p = multiprocessing.Process(target = thread_proc)
-			p.start()
-			procs.append(p)
-		for p in procs:
-			p.join()
+					correction_mat_pixel=scsp.diags(Dimg_org[((z_division*s_portion)+bucket)*r_org*c_org:((z_division*s_portion)+bucket+1)*r_org*c_org],0)
+					correction_mat2_pixel=scsp.eye(r_org*c_org,r_org*c_org)
+					correction_mat_pixel=scsp.hstack([correction_mat_pixel,correction_mat2_pixel])
+					del correction_mat2_pixel
+		
+					beta_mat_block=np.repeat(beta_mat_block,window_size_x,axis=0)	
+					beta_mat=np.repeat(beta_mat_block,window_size_y,axis=1)	
+					del beta_mat_block
+					beta_mat=np.uint16((float(1)/float(accuracy1))*beta_mat)
+					beta_changed=rank.mean_bilateral(beta_mat,selem=selem,s0=lower_val_beta,s1=upper_val_beta)
+					beta_changed=(np.float32(beta_changed))*float(accuracy1)
+					del beta_mat
+					beta_vec=np.reshape(beta_changed,(r_org*c_org,1),order='F')
+					alpha_mat_block=np.repeat(alpha_mat_block,window_size_x,axis=0)	
+					alpha_mat=np.repeat(alpha_mat_block,window_size_y,axis=1)	
+					del alpha_mat_block
+					alpha_mat=alpha_mat+cnst
+					alpha_mat=np.uint16((float(1)/float(accuracy2))*alpha_mat)
+					alpha_changed=rank.mean_bilateral(alpha_mat,selem=selem,s0=lower_val_alpha,s1=upper_val_alpha)
+					alpha_changed=((np.float32(alpha_changed))*float(accuracy2))-cnst
+					del alpha_mat
+					alpha_vec=np.reshape(alpha_changed,(r_org*c_org,1),order='F')
+					param_vec=np.vstack([beta_vec,alpha_vec])
+					corrected_data_smoothed=correction_mat_pixel*param_vec
+					corrected_data_smoothed=np.reshape(corrected_data_smoothed,(r_org,c_org),order='F')
 			
+					num_finished = 0
+					with finished_count.get_lock():
+						finished_count.value += 1
+						num_finished = finished_count.value
+					#print '  Finished %d/%d' % (num_finished, buckets)
+					with value_portion_arr.get_lock():
+						value_portion[...][:,:,bucket]=corrected_data_smoothed
+				
+	
+			procs = []
+			for i in range(num_threads):
+				p = multiprocessing.Process(target = thread_proc)
+				p.start()
+				procs.append(p)
+			for p in procs:
+				p.join()
+			value_total[:,:,(z_division*s_portion_prev):(z_division*s_portion_prev+s_portion)]=value_portion
 		return value_total
 
 	alpha=np.zeros((r_org/window_size_x,c_org/window_size_y,s))
@@ -261,7 +270,7 @@ def smoothing_func(lower_val_beta,upper_val_beta,lower_val_alpha,upper_val_alpha
 	del alpha_part
 	del beta_part
 	Corrected_data_smoothed=do_bilateral()
-
+	
 	var=np.max(Corrected_data_smoothed)-np.min(Corrected_data_smoothed)
 	Corrected_data_smoothed=(Corrected_data_smoothed-np.min(Corrected_data_smoothed))*float(255)/float(var)
 	
